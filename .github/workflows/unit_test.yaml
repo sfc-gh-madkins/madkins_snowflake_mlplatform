@@ -1,0 +1,33 @@
+name: unit-test
+on: [push, workflow_dispatch] #workflow_dispatch: Allows you to run this workflow manually from the Actions tab
+jobs:
+  unit-test-python:
+    name: "Run Unit Tests for Python"
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+    steps:
+      # Checkout step is necessary if you want to use a config file from your repo
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - name: Install Python Dependencies
+        run: |
+          pip install -r requirements.txt
+
+        # Use the CLI
+      - name: Test Python Unit
+        run: |
+          pytest -m unit -n auto --no-warnings

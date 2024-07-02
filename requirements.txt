@@ -1,0 +1,3 @@
+pandas
+pytest-xdist
+snowflake-ml-python

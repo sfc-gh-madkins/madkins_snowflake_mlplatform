@@ -1,0 +1,16 @@
+definition_version: "1.1"
+snowpark:
+  project_name: "models"
+  stage_name: <% ctx.env.SNOWFLAKE_DATABASE %>.<% ctx.env.SNOWFLAKE_SCHEMA %>.<% ctx.env.SNOWFLAKE_MODELS_STAGE %>
+  src: "models/"
+  procedures:
+    - name: <% ctx.env.SNOWFLAKE_DATABASE %>.<% ctx.env.SNOWFLAKE_SCHEMA %>.airlines_delay_model
+      runtime: "3.9"
+      #imports:
+      #  - "@<% ctx.env.SNOWFLAKE_DATABASE %>.<% ctx.env.SNOWFLAKE_SCHEMA %>.<% ctx.env.SNOWFLAKE_STAGE %>/packages/snowflake_ml_python.zip"
+      handler: "airlines_delay_model.predict"
+      signature:
+        - name: "spine_table_name"
+          type: "string"
+      returns: string #table()
+      execute_as_caller: True

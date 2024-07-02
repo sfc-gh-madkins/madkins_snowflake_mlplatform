@@ -1,0 +1,4 @@
+.DS_Store
+snowflake_mlplatform.egg-info
+__pycache__/
+*.pyc
